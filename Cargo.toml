@@ -1,0 +1,21 @@
+[package]
+name = "conversation-codec"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "JSONL save/load for LLM conversation messages with optional per-message redaction. Zero deps beyond serde_json."
+authors = ["Mukunda Rao Katta <mukunda.vjcs6@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/MukundaKatta/conversation-codec-rs"
+homepage = "https://github.com/MukundaKatta/conversation-codec-rs"
+documentation = "https://docs.rs/conversation-codec"
+readme = "README.md"
+keywords = ["llm", "conversation", "jsonl", "codec", "persistence"]
+categories = ["encoding"]
+exclude = [".github/*", "target/*", "*.log"]
+
+[dependencies]
+serde_json = "1"
+
+[dev-dependencies]
+serde_json = "1"
