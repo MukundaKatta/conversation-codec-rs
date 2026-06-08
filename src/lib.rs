@@ -37,7 +37,10 @@ use std::sync::Arc;
 pub enum CodecError {
     Io(std::io::Error),
     /// A line could not be parsed as JSON.
-    Decode { line: usize, message: String },
+    Decode {
+        line: usize,
+        message: String,
+    },
 }
 
 impl std::fmt::Display for CodecError {
@@ -87,7 +90,9 @@ impl Codec {
 
     /// Codec that applies `redact` to each message before encoding.
     pub fn with_redact(redact: impl Fn(Value) -> Value + Send + Sync + 'static) -> Self {
-        Self { redact: Some(Arc::new(redact)) }
+        Self {
+            redact: Some(Arc::new(redact)),
+        }
     }
 
     // ---- encode / decode (single message) ----------------------------
@@ -216,8 +221,10 @@ mod tests {
     fn append_adds_messages() {
         let p = tmp_path("codec_test_append.jsonl");
         let c = Codec::new();
-        c.save(&[json!({"role": "user", "content": "1"})], &p).unwrap();
-        c.append(&[json!({"role": "assistant", "content": "2"})], &p).unwrap();
+        c.save(&[json!({"role": "user", "content": "1"})], &p)
+            .unwrap();
+        c.append(&[json!({"role": "assistant", "content": "2"})], &p)
+            .unwrap();
         let loaded = c.load(&p).unwrap();
         assert_eq!(loaded.len(), 2);
         cleanup(&p);
@@ -258,10 +265,14 @@ mod tests {
     #[test]
     fn load_skips_blank_lines() {
         let p = tmp_path("codec_test_blanks.jsonl");
-        std::fs::write(&p, r#"{"role":"user"}
+        std::fs::write(
+            &p,
+            r#"{"role":"user"}
 
 {"role":"assistant"}
-"#).unwrap();
+"#,
+        )
+        .unwrap();
         let c = Codec::new();
         let loaded = c.load(&p).unwrap();
         assert_eq!(loaded.len(), 2);
